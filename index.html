@@ -318,24 +318,18 @@
                 return;
             }
 
-            // Usando %0A explicitamente para garantir que as linhas quebrem bonito no WhatsApp
-            let mensagem = `*Novo Pedido - La Casa de Pastel*%0A%0A`;
-            mensagem += `*Cliente:* ${nome}%0A`;
-            mensagem += `*Endereço:* ${endereco}%0A%0A`;
-            mensagem += `*Itens do Pedido:*%0A`;
+            let mensagem = "*Novo Pedido - La Casa de Pastel*\n\n";
+            mensagem += `*Cliente:* ${nome}\n`;
+            mensagem += `*Endereço:* ${endereco}\n\n`;
+            mensagem += `*Itens do Pedido:*\n`;
 
             let total = 0;
             carrinho.forEach(item => {
-                mensagem += `- ${item.nome} (R$ ${item.preco.toFixed(2)})%0A`;
+                mensagem += `- ${item.nome} (R$ ${item.preco.toFixed(2)})\n`;
                 total += item.preco;
             });
 
-            mensagem += `%0A*Total a Pagar: R$ ${total.toFixed(2)}*`;
+            mensagem += `\n*Total a Pagar: R$ ${total.toFixed(2)}*`;
 
             let numeroWhatsApp = "5532999893027";
-            let url = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${mensagem}`;
-
-            window.open(url, '_blank');
-        }
-</body>
-</html>
+            let url = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${encodeURIComponent(mensagem)}`;
