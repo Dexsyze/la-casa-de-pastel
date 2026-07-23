@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Casa de Pastel - Delivery</title>
+    <style>
+        :root {
+            --primary: #d90429;
+            --secondary: #fff;
+            --accent: #ffb703;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text: #212529;
+            --whatsapp: #25d366;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('fundo.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 15px;
+            color: var(--secondary);
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            border: 2px solid rgba(255, 183, 3, 0.3);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-img {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--accent);
+            margin: 0 0 15px 0;
+            font-weight: 600;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: var(--primary);
+            color: white;
+            transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .social-links a:hover {
+            background: #b50320;
+        }
+
+        h2 {
+            font-size: 16px;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 5px;
+            margin-top: 25px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .produto {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .produto-info h3 {
+            margin: 0 0 3px 0;
+            font-size: 14px;
+            color: white;
+        }
+
+        .produto-info p {
+            margin: 0;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .btn-add {
+            background-color: var(--accent);
+            color: #000;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .btn-add:hover {
+            background-color: #f79300;
+        }
+
+        .carrinho {
+            margin-top: 25px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            color: var(--text);
+        }
+
+        .carrinho h2 {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .carrinho ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .carrinho-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            padding: 6px 0;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .btn-remover {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .btn-remover:hover {
+            background: #b50320;
+        }
+
+        .total-container {
+            display: flex;
+            justify-content: space-between;
+            font-size: 17px;
+            font-weight: bold;
+            margin-top: 15px;
+            color: var(--primary);
+        }
+
+        label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #444;
+            display: block;
+            margin-top: 12px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 4px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 13px;
+            outline: none;
+            background: #f9f9f9;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            background: #fff;
+        }
+
+        .btn-enviar {
+            width: 100%;
+            background-color: var(--whatsapp);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-enviar:hover {
+            background-color: #1ebe5d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="La Casa de Pastel Logo" class="logo-img">
+            <p class="subtitle">O sabor que você ama, no conforto do seu lar 🥟🔥</p>
+            
+            <div class="social-links">
+                <a href="https://instagram.com/lacasadepastel.eugenopolis" target="_blank">📸 Instagram</a>
+                <a href="https://wa.me/5532999893027" target="_blank">💬 WhatsApp</a>
+            </div>
+        </header>
+
+        <h2>🥟 Pastéis</h2>
+
+        <div class="produto">
+            <div class="produto-info">
+                <h3>Pastel de Frango com Catupiry</h3>
+                <p>R$ 10,00</p>
+            </div>
+            <button class="btn-add" onclick="adicionar('Pastel de Frango com Catupiry', 10)">+ Adicionar</button>
+        </div>
+
+        <div class="produto">
+            <div class="produto-info">
+                <h3>Pastel de Carne com Queijo</h3>
+                <p>R$ 10,00</p>
+            </div>
+            <button class="btn-add" onclick="adicionar('Pastel de Carne com Queijo', 10)">+ Adicionar</button>
+        </div>
+
+        <div class="produto">
+            <div class="produto-info">
+                <h3>Pastel Simples (Carne ou Frango)</h3>
+                <p>R$ 6,00</p>
+            </div>
+            <button class="btn-add" onclick="adicionar('Pastel Simples', 6)">+ Adicionar</button>
+        </div>
+
+        <h2>🥤 Caldo de Cana</h2>
+
+        <div class="produto">
+            <div class="produto-info">
+                <h3>Garrafa 500ml</h3>
+                <p>R$ 8,00</p>
+            </div>
+            <button class="btn-add" onclick="adicionar('Caldo de Cana 500ml', 8)">+ Adicionar</button>
+        </div>
+
+        <div class="produto">
+            <div class="produto-info">
+                <h3>Garrafa 1L</h3>
+                <p>R$ 15,00</p>
+            </div>
+            <button class="btn-add" onclick="adicionar('Caldo de Cana 1L', 15)">+ Adicionar</button>
+        </div>
+
+        <div class="carrinho">
+            <h2>Seu Pedido</h2>
+            <ul id="itens-carrinho">
+                <li style="color: #777; font-size: 13px; text-align: center; padding: 10px 0;">Carrinho vazio. Escolha os itens acima!</li>
+            </ul>
+            
+            <div class="total-container">
+                <span>Total:</span>
+                <span>R$ <span id="total-geral">0,00</span></span>
+            </div>
+
+            <label for="nome">Seu Nome:</label>
+            <input type="text" id="nome" placeholder="Ex: João da Silva">
+
+            <label for="endereco">Endereço de Entrega:</label>
+            <input type="text" id="endereco" placeholder="Ex: Rua Principal, 123">
+
+            <button class="btn-enviar" onclick="enviarParaWhatsApp()">Enviar Pedido no WhatsApp 🚀</button>
+        </div>
+    </div>
+
+    <script>
+        let carrinho = [];
+
+        function adicionar(nome, preco) {
+            carrinho.push({ nome, preco });
+            atualizarCarrinho();
+        }
+
+        function removerItem(index) {
+            carrinho.splice(index, 1);
+            atualizarCarrinho();
+        }
+
+        function atualizarCarrinho() {
+            let lista = document.getElementById('itens-carrinho');
+            let totalGeral = document.getElementById('total-geral');
+            
+            lista.innerHTML = "";
+            let total = 0;
+
+            if (carrinho.length === 0) {
+                lista.innerHTML = '<li style="color: #777; font-size: 13px; text-align: center; padding: 10px 0;">Carrinho vazio. Escolha os itens acima!</li>';
+                totalGeral.textContent = "0,00";
+                return;
+            }
+
+            carrinho.forEach((item, index) => {
+                total += item.preco;
+                let li = document.createElement('li');
+                li.className = 'carrinho-item';
+                li.innerHTML = `
+                    <span>${item.nome} - R$ ${item.preco.toFixed(2)}</span>
+                    <button class="btn-remover" onclick="removerItem(${index})">X</button>
+                `;
+                lista.appendChild(li);
+            });
+
+            totalGeral.textContent = total.toFixed(2);
+        }
+
+        function enviarParaWhatsApp() {
+            let nome = document.getElementById('nome'.value)?.trim() || document.getElementById('nome').value;
+            let endereco = document.getElementById('endereco').value;
+
+            if (carrinho.length === 0) {
+                alert("Adicione pelo menos um item ao pedido!");
+                return;
+            }
+            if (nome.trim() === "" || endereco.trim() === "") {
+                alert("Por favor, preencha seu nome e endereço!");
+                return;
+            }
+
+            let mensagem = `*Novo Pedido - La Casa de Pastel*%0A%0A`;
+            mensagem += `*Cliente:* ${nome}%0A`;
+            mensagem += `*Endereço:* ${endereco}%0A%0A`;
+            mensagem += `*Itens do Pedido:*%0A`;
+
+            let total = 0;
+            carrinho.forEach(item => {
+                mensagem += `- ${item.nome} (R$ ${item.preco.toFixed(2)})%0A`;
+                total += item.preco;
+            });
+
+            mensagem += `%0A*Total a Pagar: R$ ${total.toFixed(2)}*`;
+
+            let numeroWhatsApp = "5532999893027";
+            let url = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${mensagem}`;
+
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
