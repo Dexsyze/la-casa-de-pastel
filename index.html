@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Casa de Pastel - Delivery</title>
+    <title>La Casa de Pastel | Delivery</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         :root {
             --primary: #d90429;
             --secondary: #fff;
@@ -125,6 +131,11 @@
 
         .btn-add:hover {
             background-color: #f79300;
+        }
+
+        button:active, .btn-add:active, .btn-enviar:active, .social-links a:active {
+            transform: scale(0.96);
+            transition: transform 0.1s ease;
         }
 
         .carrinho {
@@ -355,7 +366,7 @@
                 return;
             }
 
-            let mensagem = "*Novo Pedido - La Casa de Pastel*\n\n";
+            let mensagem = `*Novo Pedido - La Casa de Pastel*\n\n`;
             mensagem += `*Cliente:* ${nome}\n`;
             mensagem += `*Endereço:* ${endereco}\n\n`;
             mensagem += `*Itens do Pedido:*\n`;
