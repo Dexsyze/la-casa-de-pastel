@@ -34,7 +34,7 @@
         .container {
             max-width: 480px;
             margin: 0 auto;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             padding: 20px;
             border-radius: 16px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.6);
@@ -47,31 +47,31 @@
         }
 
         .logo-img {
-            max-width: 200px;
+            max-width: 180px;
             height: auto;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
         }
 
         .subtitle {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--accent);
-            margin: 0 0 15px 0;
+            margin: 0 0 12px 0;
             font-weight: 600;
         }
 
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 10px;
         }
 
         .social-links a {
             text-decoration: none;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 20px;
             background: var(--primary);
             color: white;
@@ -79,34 +79,71 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
-        .social-links a:hover {
-            background: #b50320;
+        /* ESTILO DO ACCORDION (CATEGORIAS RETRÁTEIS) */
+        details {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 183, 3, 0.3);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            transition: 0.2s;
         }
 
-        h2 {
-            font-size: 16px;
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 5px;
-            margin-top: 25px;
+        details[open] {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: var(--accent);
+        }
+
+        summary {
+            font-size: 15px;
+            font-weight: bold;
             color: var(--accent);
+            padding: 12px 15px;
+            cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: "▼";
+            font-size: 12px;
+            transition: transform 0.2s;
+        }
+
+        details[open] summary::after {
+            transform: rotate(180deg);
+        }
+
+        .conteudo-categoria {
+            padding: 0 12px 10px 12px;
         }
 
         .produto {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
+            padding: 8px 10px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+
+        .produto:last-child {
+            margin-bottom: 0;
         }
 
         .produto-info h3 {
-            margin: 0 0 3px 0;
-            font-size: 14px;
+            margin: 0 0 2px 0;
+            font-size: 13px;
             color: white;
         }
 
@@ -114,18 +151,18 @@
             margin: 0;
             color: var(--accent);
             font-weight: bold;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .btn-add {
             background-color: var(--accent);
             color: #000;
             border: none;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 11px;
             transition: 0.2s;
         }
 
@@ -139,30 +176,34 @@
         }
 
         .carrinho {
-            margin-top: 25px;
+            margin-top: 20px;
             background: var(--card-bg);
-            padding: 20px;
+            padding: 15px;
             border-radius: 12px;
             color: var(--text);
         }
 
         .carrinho h2 {
             color: var(--primary);
-            border-bottom-color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 4px;
+            margin-top: 5px;
+            font-size: 15px;
+            text-transform: uppercase;
         }
 
         .carrinho ul {
             list-style: none;
             padding: 0;
-            margin: 10px 0;
+            margin: 8px 0;
         }
 
         .carrinho-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 13px;
-            padding: 6px 0;
+            font-size: 12px;
+            padding: 5px 0;
             border-bottom: 1px dashed #ccc;
         }
 
@@ -170,10 +211,10 @@
             background: var(--primary);
             color: white;
             border: none;
-            padding: 3px 8px;
+            padding: 2px 6px;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
         }
 
@@ -184,28 +225,28 @@
         .total-container {
             display: flex;
             justify-content: space-between;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: bold;
-            margin-top: 15px;
+            margin-top: 12px;
             color: var(--primary);
         }
 
         label {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: #444;
             display: block;
-            margin-top: 12px;
+            margin-top: 10px;
         }
 
         input {
             width: 100%;
-            padding: 10px;
-            margin-top: 4px;
+            padding: 8px;
+            margin-top: 3px;
             border: 1px solid #ccc;
             border-radius: 8px;
             box-sizing: border-box;
-            font-size: 13px;
+            font-size: 12px;
             outline: none;
             background: #f9f9f9;
         }
@@ -220,12 +261,12 @@
             background-color: var(--whatsapp);
             color: white;
             border: none;
-            padding: 14px;
+            padding: 12px;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 15px;
             transition: 0.2s;
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
         }
@@ -243,59 +284,107 @@
             <p class="subtitle">O sabor que você ama, no conforto do seu lar 🥟🔥</p>
             
             <div class="social-links">
-                <a href="https://instagram.com/lacasadepastel.eugenopolis" target="_blank">📸 Instagram</a>
+                <a href="https://instagram.com/LaCasadePastel" target="_blank">📸 Instagram</a>
                 <a href="https://wa.me/5532999893027" target="_blank">💬 WhatsApp</a>
             </div>
         </header>
 
-        <h2>🥟 Pastéis</h2>
-
-        <div class="produto">
-            <div class="produto-info">
-                <h3>Pastel de Frango com Catupiry</h3>
-                <p>R$ 10,00</p>
+        <!-- TRADICIONAL -->
+        <details>
+            <summary>🥟 Tradicional (R$ 5,00)</summary>
+            <div class="conteudo-categoria">
+                <div class="produto"><div class="produto-info"><h3>Pastel de Queijo</h3><p>R$ 5,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Queijo', 5)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Pastel de Frango</h3><p>R$ 5,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Frango', 5)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Pastel de Carne</h3><p>R$ 5,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Carne', 5)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Pastel de Calabresa</h3><p>R$ 5,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Calabresa', 5)">+ Adicionar</button></div>
             </div>
-            <button class="btn-add" onclick="adicionar('Pastel de Frango com Catupiry', 10)">+ Adicionar</button>
-        </div>
+        </details>
 
-        <div class="produto">
-            <div class="produto-info">
-                <h3>Pastel de Carne com Queijo</h3>
-                <p>R$ 10,00</p>
+        <!-- CLÁSSICOS -->
+        <details>
+            <summary>🔥 Clássicos</summary>
+            <div class="conteudo-categoria">
+                <div class="produto"><div class="produto-info"><h3>Pastel de Pizza</h3><p>R$ 6,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Pizza', 6)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Pastel de Carne c/ Queijo</h3><p>R$ 6,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Carne c/ Queijo', 6)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Pastel de Frango c/ Queijo</h3><p>R$ 6,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Frango c/ Queijo', 6)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Pastel de Frango c/ Catupiry</h3><p>R$ 6,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Frango c/ Catupiry', 6)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Pastel de Frango c/ Palmito</h3><p>R$ 6,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Frango c/ Palmito', 6)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Pastel de Frango c/ Calabresa</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Frango c/ Calabresa', 8)">+ Adicionar</button></div>
             </div>
-            <button class="btn-add" onclick="adicionar('Pastel de Carne com Queijo', 10)">+ Adicionar</button>
-        </div>
+        </details>
 
-        <div class="produto">
-            <div class="produto-info">
-                <h3>Pastel Simples (Carne ou Frango)</h3>
-                <p>R$ 6,00</p>
+        <!-- ESPECIAIS -->
+        <details>
+            <summary>⭐ Especiais (R$ 8,00)</summary>
+            <div class="conteudo-categoria">
+                <div class="produto"><div class="produto-info"><h3>Carne / Presunto / Queijo</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Pastel Carne/Presunto/Queijo', 8)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Carne / Palmito / Queijo</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Pastel Carne/Palmito/Queijo', 8)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Carne / Calabresa / Queijo</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Pastel Carne/Calabresa/Queijo', 8)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Frango / Presunto / Queijo</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Pastel Frango/Presunto/Queijo', 8)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Frango / Palmito / Queijo</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Pastel Frango/Palmito/Queijo', 8)">+ Adicionar</button></div>
             </div>
-            <button class="btn-add" onclick="adicionar('Pastel Simples', 6)">+ Adicionar</button>
-        </div>
+        </details>
 
-        <h2>🥤 Caldo de Cana</h2>
-
-        <div class="produto">
-            <div class="produto-info">
-                <h3>Garrafa 500ml</h3>
-                <p>R$ 8,00</p>
+        <!-- PREMIUM -->
+        <details>
+            <summary>💎 Premium</summary>
+            <div class="conteudo-categoria">
+                <div class="produto"><div class="produto-info"><h3>Pastel de Estrogonofe</h3><p>R$ 10,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Estrogonofe', 10)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Pastel Monjaro</h3><p>R$ 10,00</p></div><button class="btn-add" onclick="adicionar('Pastel Monjaro', 10)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Pastel de Carne Seca</h3><p>R$ 12,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Carne Seca', 12)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Pastel Bariátrica</h3><p>R$ 15,00</p></div><button class="btn-add" onclick="adicionar('Pastel Bariátrica', 15)">+ Adicionar</button></div>
             </div>
-            <button class="btn-add" onclick="adicionar('Caldo de Cana 500ml', 8)">+ Adicionar</button>
-        </div>
+        </details>
 
-        <div class="produto">
-            <div class="produto-info">
-                <h3>Garrafa 1L</h3>
-                <p>R$ 15,00</p>
+        <!-- SUCOS NATURAIS -->
+        <details>
+            <summary>🥤 Sucos Naturais (R$ 8,00)</summary>
+            <div class="conteudo-categoria">
+                <div class="produto"><div class="produto-info"><h3>Suco de Laranja</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Suco de Laranja', 8)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Suco de Abacaxi</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Suco de Abacaxi', 8)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Suco de Graviola</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Suco de Graviola', 8)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Suco de Maracujá</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Suco de Maracujá', 8)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Suco de Morango</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Suco de Morango', 8)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Suco de Manga</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Suco de Manga', 8)">+ Adicionar</button></div>
             </div>
-            <button class="btn-add" onclick="adicionar('Caldo de Cana 1L', 15)">+ Adicionar</button>
-        </div>
+        </details>
+
+        <!-- ÁGUA DE CÔCO -->
+        <details>
+            <summary>🥥 Água de Côco</summary>
+            <div class="conteudo-categoria">
+                <div class="produto"><div class="produto-info"><h3>Água de Côco 500ml (Garrafa)</h3><p>R$ 10,00</p></div><button class="btn-add" onclick="adicionar('Água de Côco 500ml Garrafa', 10)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Água de Côco 300ml (Copo)</h3><p>R$ 7,00</p></div><button class="btn-add" onclick="adicionar('Água de Côco 300ml Copo', 7)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Água de Côco 200ml (Copo)</h3><p>R$ 5,00</p></div><button class="btn-add" onclick="adicionar('Água de Côco 200ml Copo', 5)">+ Adicionar</button></div>
+            </div>
+        </details>
+
+        <!-- ÁGUA MINERAL -->
+        <details>
+            <summary>💧 Água Mineral</summary>
+            <div class="conteudo-categoria">
+                <div class="produto"><div class="produto-info"><h3>Água Mineral c/ Gás</h3><p>R$ 3,50</p></div><button class="btn-add" onclick="adicionar('Água Mineral c/ Gás', 3.50)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Água Mineral s/ Gás</h3><p>R$ 3,00</p></div><button class="btn-add" onclick="adicionar('Água Mineral s/ Gás', 3.00)">+ Adicionar</button></div>
+            </div>
+        </details>
+
+        <!-- REFRIGERANTE -->
+        <details>
+            <summary>Refri & Outros</summary>
+            <div class="conteudo-categoria">
+                <div class="produto"><div class="produto-info"><h3>Refrigerante 1L</h3><p>R$ 12,00</p></div><button class="btn-add" onclick="adicionar('Refrigerante 1L', 12)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Refrigerante 600ml</h3><p>R$ 10,00</p></div><button class="btn-add" onclick="adicionar('Refrigerante 600ml', 10)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Refrigerante Lata 350ml</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Refrigerante Lata 350ml', 8)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Refrigerante Lata 220ml</h3><p>R$ 6,00</p></div><button class="btn-add" onclick="adicionar('Refrigerante Lata 220ml', 6)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Refrigerante Juninho 200ml</h3><p>R$ 4,00</p></div><button class="btn-add" onclick="adicionar('Refrigerante Juninho 200ml', 4)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Guaravita</h3><p>R$ 3,50</p></div><button class="btn-add" onclick="adicionar('Guaravita', 3.50)">+ Adicionar</button></div>
+            </div>
+        </details>
 
         <div class="carrinho">
             <h2>Seu Pedido</h2>
             <ul id="itens-carrinho">
-                <li style="color: #777; font-size: 13px; text-align: center; padding: 10px 0;">Carrinho vazio. Escolha os itens acima!</li>
+                <li style="color: #777; font-size: 12px; text-align: center; padding: 8px 0;">Carrinho vazio. Escolha os itens acima!</li>
             </ul>
             
             <div class="total-container">
@@ -334,7 +423,7 @@
             let total = 0;
 
             if (carrinho.length === 0) {
-                lista.innerHTML = '<li style="color: #777; font-size: 13px; text-align: center; padding: 10px 0;">Carrinho vazio. Escolha os itens acima!</li>';
+                lista.innerHTML = '<li style="color: #777; font-size: 12px; text-align: center; padding: 8px 0;">Carrinho vazio. Escolha os itens acima!</li>';
                 totalGeral.textContent = "0,00";
                 return;
             }
@@ -379,7 +468,7 @@
 
             mensagem += `\n*Total a Pagar: R$ ${total.toFixed(2)}*`;
 
-            let numeroWhatsApp = "5532999137255";
+            let numeroWhatsApp = "5532999893027";
             let url = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${encodeURIComponent(mensagem)}`;
 
             window.open(url, '_blank');
