@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Casa de Pastel | Delivery</title>
+    <title>La Casa do Pastel | Delivery</title>
     <link rel="icon" type="image/png" href="logo.png">
     
     <style>
@@ -79,7 +79,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
 
-        /* ESTILO DO ACCORDION (CATEGORIAS RETRÁTEIS) */
+        /* ESTILO DO ACCORDION */
         details {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 183, 3, 0.3);
@@ -95,7 +95,7 @@
         }
 
         summary {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             color: var(--accent);
             padding: 12px 15px;
@@ -114,7 +114,7 @@
 
         summary::after {
             content: "▼";
-            font-size: 12px;
+            font-size: 11px;
             transition: transform 0.2s;
         }
 
@@ -154,11 +154,36 @@
             font-size: 12px;
         }
 
+        .controles-qtd {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-qtd {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .qtd-num {
+            font-size: 13px;
+            font-weight: bold;
+            width: 20px;
+            text-align: center;
+        }
+
         .btn-add {
             background-color: var(--accent);
             color: #000;
             border: none;
-            padding: 5px 10px;
+            padding: 5px 8px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
@@ -239,7 +264,7 @@
             margin-top: 10px;
         }
 
-        input {
+        input, select {
             width: 100%;
             padding: 8px;
             margin-top: 3px;
@@ -251,9 +276,13 @@
             background: #f9f9f9;
         }
 
-        input:focus {
+        input:focus, select:focus {
             border-color: var(--primary);
             background: #fff;
+        }
+
+        #campo-troco {
+            display: none; /* Começa oculto */
         }
 
         .btn-enviar {
@@ -280,23 +309,23 @@
 
     <div class="container">
         <header>
-            <img src="logo.png" alt="La Casa de Pastel Logo" class="logo-img">
-            <p class="subtitle">O sabor que você ama, no conforto do seu lar 🥟🔥</p>
+            <img src="logo.png" alt="La Casa do Pastel Logo" class="logo-img">
+            <p class="subtitle">Pastelaria e Caldo de Cana 🥟🔥</p>
             
             <div class="social-links">
-                <a href="https://www.instagram.com/lacasadepastel.eugenopolis/" target="_blank">📸 Instagram</a>
+                <a href="https://instagram.com/LaCasadoPastel" target="_blank">📸 Instagram</a>
                 <a href="https://wa.me/5532999893027" target="_blank">💬 WhatsApp</a>
             </div>
         </header>
 
         <!-- TRADICIONAL -->
         <details>
-            <summary>🥟 Tradicional (R$ 5,00)</summary>
+            <summary>🥟 Tradicional</summary>
             <div class="conteudo-categoria">
-                <div class="produto"><div class="produto-info"><h3>Pastel de Queijo</h3><p>R$ 5,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Queijo', 5)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Pastel de Frango</h3><p>R$ 5,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Frango', 5)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Pastel de Carne</h3><p>R$ 5,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Carne', 5)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Pastel de Calabresa</h3><p>R$ 5,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Calabresa', 5)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Queijo</h3><p>R$ 5,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-queijo', -1)">-</button><span id="q-queijo" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-queijo', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel de Queijo', 5, 'q-queijo')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Frango</h3><p>R$ 5,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-frango', -1)">-</button><span id="q-frango" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-frango', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel de Frango', 5, 'q-frango')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Carne</h3><p>R$ 5,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-carne', -1)">-</button><span id="q-carne" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-carne', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel de Carne', 5, 'q-carne')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Calabresa</h3><p>R$ 5,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-calabresa', -1)">-</button><span id="q-calabresa" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-calabresa', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel de Calabresa', 5, 'q-calabresa')">Adicionar</button></div></div>
             </div>
         </details>
 
@@ -304,24 +333,24 @@
         <details>
             <summary>🔥 Clássicos</summary>
             <div class="conteudo-categoria">
-                <div class="produto"><div class="produto-info"><h3>Pastel de Pizza</h3><p>R$ 6,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Pizza', 6)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Pastel de Carne c/ Queijo</h3><p>R$ 6,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Carne c/ Queijo', 6)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Pastel de Frango c/ Queijo</h3><p>R$ 6,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Frango c/ Queijo', 6)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Pastel de Frango c/ Catupiry</h3><p>R$ 6,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Frango c/ Catupiry', 6)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Pastel de Frango c/ Palmito</h3><p>R$ 6,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Frango c/ Palmito', 6)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Pastel de Frango c/ Calabresa</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Frango c/ Calabresa', 8)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Pizza</h3><p>R$ 6,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-pizza', -1)">-</button><span id="q-pizza" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-pizza', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel de Pizza', 6, 'q-pizza')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Carne c/ Queijo</h3><p>R$ 6,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-cq', -1)">-</button><span id="q-cq" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-cq', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel de Carne c/ Queijo', 6, 'q-cq')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Frango c/ Queijo</h3><p>R$ 6,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-fq', -1)">-</button><span id="q-fq" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-fq', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel de Frango c/ Queijo', 6, 'q-fq')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Frango c/ Catupiry</h3><p>R$ 6,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-fcat', -1)">-</button><span id="q-fcat" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-fcat', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel de Frango c/ Catupiry', 6, 'q-fcat')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Frango c/ Palmito</h3><p>R$ 6,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-fpal', -1)">-</button><span id="q-fpal" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-fpal', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel de Frango c/ Palmito', 6, 'q-fpal')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Frango c/ Calabresa</h3><p>R$ 8,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-fcal', -1)">-</button><span id="q-fcal" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-fcal', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel de Frango c/ Calabresa', 8, 'q-fcal')">Adicionar</button></div></div>
             </div>
         </details>
 
         <!-- ESPECIAIS -->
         <details>
-            <summary>⭐ Especiais (R$ 8,00)</summary>
+            <summary>⭐ Especiais</summary>
             <div class="conteudo-categoria">
-                <div class="produto"><div class="produto-info"><h3>Carne / Presunto / Queijo</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Pastel Carne/Presunto/Queijo', 8)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Carne / Palmito / Queijo</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Pastel Carne/Palmito/Queijo', 8)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Carne / Calabresa / Queijo</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Pastel Carne/Calabresa/Queijo', 8)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Frango / Presunto / Queijo</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Pastel Frango/Presunto/Queijo', 8)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Frango / Palmito / Queijo</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Pastel Frango/Palmito/Queijo', 8)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Carne / Presunto / Queijo</h3><p>R$ 8,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-esp1', -1)">-</button><span id="q-esp1" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-esp1', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel Carne/Presunto/Queijo', 8, 'q-esp1')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Carne / Palmito / Queijo</h3><p>R$ 8,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-esp2', -1)">-</button><span id="q-esp2" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-esp2', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel Carne/Palmito/Queijo', 8, 'q-esp2')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Carne / Calabresa / Queijo</h3><p>R$ 8,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-esp3', -1)">-</button><span id="q-esp3" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-esp3', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel Carne/Calabresa/Queijo', 8, 'q-esp3')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Frango / Presunto / Queijo</h3><p>R$ 8,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-esp4', -1)">-</button><span id="q-esp4" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-esp4', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel Frango/Presunto/Queijo', 8, 'q-esp4')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Frango / Palmito / Queijo</h3><p>R$ 8,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-esp5', -1)">-</button><span id="q-esp5" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-esp5', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel Frango/Palmito/Queijo', 8, 'q-esp5')">Adicionar</button></div></div>
             </div>
         </details>
 
@@ -329,33 +358,35 @@
         <details>
             <summary>💎 Premium</summary>
             <div class="conteudo-categoria">
-                <div class="produto"><div class="produto-info"><h3>Pastel de Estrogonofe</h3><p>R$ 10,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Estrogonofe', 10)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Pastel Monjaro</h3><p>R$ 10,00</p></div><button class="btn-add" onclick="adicionar('Pastel Monjaro', 10)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Pastel de Carne Seca</h3><p>R$ 12,00</p></div><button class="btn-add" onclick="adicionar('Pastel de Carne Seca', 12)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Pastel Bariátrica</h3><p>R$ 15,00</p></div><button class="btn-add" onclick="adicionar('Pastel Bariátrica', 15)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Estrogonofe</h3><p>R$ 10,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-estr', -1)">-</button><span id="q-estr" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-estr', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel de Estrogonofe', 10, 'q-estr')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Monjaro</h3><p>R$ 10,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-mon', -1)">-</button><span id="q-mon" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-mon', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel Monjaro', 10, 'q-mon')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Carne Seca</h3><p>R$ 12,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-csc', -1)">-</button><span id="q-csc" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-csc', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel de Carne Seca', 12, 'q-csc')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Bariátrica</h3><p>R$ 15,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-bar', -1)">-</button><span id="q-bar" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-bar', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Pastel Bariátrica', 15, 'q-bar')">Adicionar</button></div></div>
             </div>
         </details>
 
-        <!-- SUCOS NATURAIS -->
+        <!-- SUCOS -->
         <details>
-            <summary>🥤 Sucos Naturais (R$ 8,00)</summary>
+            <summary>🥤 Suco</summary>
             <div class="conteudo-categoria">
-                <div class="produto"><div class="produto-info"><h3>Suco de Laranja</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Suco de Laranja', 8)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Suco de Abacaxi</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Suco de Abacaxi', 8)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Suco de Graviola</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Suco de Graviola', 8)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Suco de Maracujá</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Suco de Maracujá', 8)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Suco de Morango</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Suco de Morango', 8)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Suco de Manga</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Suco de Manga', 8)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Suco de Laranja Natural (Copo)</h3><p>R$ 8,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-s1', -1)">-</button><span id="q-s1" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-s1', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Suco de Laranja Natural Copo', 8, 'q-s1')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Suco de Abacaxi Natural (Copo)</h3><p>R$ 8,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-s2', -1)">-</button><span id="q-s2" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-s2', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Suco de Abacaxi Natural Copo', 8, 'q-s2')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Suco de Graviola Natural (Copo)</h3><p>R$ 8,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-s3', -1)">-</button><span id="q-s3" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-s3', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Suco de Graviola Natural Copo', 8, 'q-s3')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Suco de Maracujá Natural (Copo)</h3><p>R$ 8,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-s4', -1)">-</button><span id="q-s4" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-s4', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Suco de Maracujá Natural Copo', 8, 'q-s4')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Suco Verde 300ml (Copo)</h3><p>R$ 3,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-s5', -1)">-</button><span id="q-s5" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-s5', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Suco Verde 300ml Copo', 3, 'q-s5')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Suco de Laranjada 300ml (Copo)</h3><p>R$ 3,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-s6', -1)">-</button><span id="q-s6" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-s6', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Suco de Laranjada 300ml Copo', 3, 'q-s6')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Suco Natural (Garrafa) 500ml</h3><p>R$ 10,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-s7', -1)">-</button><span id="q-s7" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-s7', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Suco Natural Garrafa 500ml', 10, 'q-s7')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Suco Natural (Garrafa) 1 Litro</h3><p>R$ 18,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-s8', -1)">-</button><span id="q-s8" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-s8', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Suco Natural Garrafa 1L', 18, 'q-s8')">Adicionar</button></div></div>
             </div>
         </details>
 
-        <!-- ÁGUA DE CÔCO -->
+        <!-- ÁGUA DE COCO -->
         <details>
-            <summary>🥥 Água de Côco</summary>
+            <summary>🥥 Água de Coco</summary>
             <div class="conteudo-categoria">
-                <div class="produto"><div class="produto-info"><h3>Água de Côco 500ml (Garrafa)</h3><p>R$ 10,00</p></div><button class="btn-add" onclick="adicionar('Água de Côco 500ml Garrafa', 10)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Água de Côco 300ml (Copo)</h3><p>R$ 7,00</p></div><button class="btn-add" onclick="adicionar('Água de Côco 300ml Copo', 7)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Água de Côco 200ml (Copo)</h3><p>R$ 5,00</p></div><button class="btn-add" onclick="adicionar('Água de Côco 200ml Copo', 5)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Água de Coco 500ml Garrafa</h3><p>R$ 10,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-ac1', -1)">-</button><span id="q-ac1" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-ac1', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Água de Coco 500ml Garrafa', 10, 'q-ac1')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Água de Coco 300ml Copo</h3><p>R$ 7,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-ac2', -1)">-</button><span id="q-ac2" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-ac2', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Água de Coco 300ml Copo', 7, 'q-ac2')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Água de Coco 200ml Copo</h3><p>R$ 5,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-ac3', -1)">-</button><span id="q-ac3" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-ac3', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Água de Coco 200ml Copo', 5, 'q-ac3')">Adicionar</button></div></div>
             </div>
         </details>
 
@@ -363,21 +394,28 @@
         <details>
             <summary>💧 Água Mineral</summary>
             <div class="conteudo-categoria">
-                <div class="produto"><div class="produto-info"><h3>Água Mineral c/ Gás</h3><p>R$ 3,50</p></div><button class="btn-add" onclick="adicionar('Água Mineral c/ Gás', 3.50)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Água Mineral s/ Gás</h3><p>R$ 3,00</p></div><button class="btn-add" onclick="adicionar('Água Mineral s/ Gás', 3.00)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Água Mineral c/ Gás</h3><p>R$ 3,50</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-ag1', -1)">-</button><span id="q-ag1" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-ag1', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Água Mineral c/ Gás', 3.50, 'q-ag1')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Água Mineral s/ Gás</h3><p>R$ 3,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-ag2', -1)">-</button><span id="q-ag2" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-ag2', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Água Mineral s/ Gás', 3.00, 'q-ag2')">Adicionar</button></div></div>
+            </div>
+        </details>
+
+        <!-- CALDO DE CANA -->
+        <details>
+            <summary>🌾 Caldo de Cana</summary>
+            <div class="conteudo-categoria">
+                <div class="produto"><div class="produto-info"><h3>Caldo de Cana Copo 300ml</h3><p>R$ 5,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-cc1', -1)">-</button><span id="q-cc1" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-cc1', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Caldo de Cana Copo 300ml', 5, 'q-cc1')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Caldo de Cana Garrafa 500ml</h3><p>R$ 8,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-cc2', -1)">-</button><span id="q-cc2" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-cc2', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Caldo de Cana Garrafa 500ml', 8, 'q-cc2')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Caldo de Cana 1 Litro</h3><p>R$ 15,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-cc3', -1)">-</button><span id="q-cc3" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-cc3', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Caldo de Cana 1 Litro', 15, 'q-cc3')">Adicionar</button></div></div>
             </div>
         </details>
 
         <!-- REFRIGERANTE -->
         <details>
-            <summary>Refri & Outros</summary>
+            <summary>Refrigerante</summary>
             <div class="conteudo-categoria">
-                <div class="produto"><div class="produto-info"><h3>Refrigerante 1L</h3><p>R$ 12,00</p></div><button class="btn-add" onclick="adicionar('Refrigerante 1L', 12)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Refrigerante 600ml</h3><p>R$ 10,00</p></div><button class="btn-add" onclick="adicionar('Refrigerante 600ml', 10)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Refrigerante Lata 350ml</h3><p>R$ 8,00</p></div><button class="btn-add" onclick="adicionar('Refrigerante Lata 350ml', 8)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Refrigerante Lata 220ml</h3><p>R$ 6,00</p></div><button class="btn-add" onclick="adicionar('Refrigerante Lata 220ml', 6)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Refrigerante Juninho 200ml</h3><p>R$ 4,00</p></div><button class="btn-add" onclick="adicionar('Refrigerante Juninho 200ml', 4)">+ Adicionar</button></div>
-                <div class="produto"><div class="produto-info"><h3>Guaravita</h3><p>R$ 3,50</p></div><button class="btn-add" onclick="adicionar('Guaravita', 3.50)">+ Adicionar</button></div>
+                <div class="produto"><div class="produto-info"><h3>Refrigerante 1 Litro</h3><p>R$ 12,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-ref1', -1)">-</button><span id="q-ref1" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-ref1', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Refrigerante 1 Litro', 12, 'q-ref1')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Refrigerante 600ml</h3><p>R$ 10,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-ref2', -1)">-</button><span id="q-ref2" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-ref2', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Refrigerante 600ml', 10, 'q-ref2')">Adicionar</button></div></div>
+                <div class="produto"><div class="produto-info"><h3>Refrigerante Lata 350ml</h3><p>R$ 8,00</p></div><div class="controles-qtd"><button class="btn-qtd" onclick="mudarQtd('q-ref3', -1)">-</button><span id="q-ref3" class="qtd-num">1</span><button class="btn-qtd" onclick="mudarQtd('q-ref3', 1)">+</button><button class="btn-add" onclick="adicionarComQtd('Refrigerante Lata 350ml', 8, 'q-ref3')">Adicionar</button></div></div>
             </div>
         </details>
 
@@ -398,6 +436,19 @@
             <label for="endereco">Endereço de Entrega:</label>
             <input type="text" id="endereco" placeholder="Ex: Rua Principal, 123">
 
+            <label for="pagamento">Forma de Pagamento:</label>
+            <select id="pagamento" onchange="verificarPagamento()">
+                <option value="Pix">Pix</option>
+                <option value="Dinheiro">Dinheiro</option>
+                <option value="Cartão de Crédito">Cartão de Crédito</option>
+                <option value="Cartão de Débito">Cartão de Débito</option>
+            </select>
+
+            <div id="campo-troco">
+                <label for="troco">Troco para quanto? (Opcional):</label>
+                <input type="text" id="troco" placeholder="Ex: R$ 50,00">
+            </div>
+
             <button class="btn-enviar" onclick="enviarParaWhatsApp()">Enviar Pedido no WhatsApp 🚀</button>
         </div>
     </div>
@@ -405,8 +456,25 @@
     <script>
         let carrinho = [];
 
-        function adicionar(nome, preco) {
-            carrinho.push({ nome, preco });
+        function mudarQtd(idElemento, valor) {
+            let el = document.getElementById(idElemento);
+            let atual = parseInt(el.textContent);
+            let novo = atual + valor;
+            if (novo < 1) novo = 1;
+            el.textContent = novo;
+        }
+
+        function adicionarComQtd(nome, preco, idElemento) {
+            let qtd = parseInt(document.getElementById(idElemento).textContent);
+            
+            let itemExistente = carrinho.find(item => item.nome === nome);
+            if (itemExistente) {
+                itemExistente.qtd += qtd;
+            } else {
+                carrinho.push({ nome, preco, qtd });
+            }
+
+            document.getElementById(idElemento).textContent = 1;
             atualizarCarrinho();
         }
 
@@ -429,11 +497,12 @@
             }
 
             carrinho.forEach((item, index) => {
-                total += item.preco;
+                let subtotal = item.preco * item.qtd;
+                total += subtotal;
                 let li = document.createElement('li');
                 li.className = 'carrinho-item';
                 li.innerHTML = `
-                    <span>${item.nome} - R$ ${item.preco.toFixed(2)}</span>
+                    <span>${item.qtd}x ${item.nome} - R$ ${subtotal.toFixed(2)}</span>
                     <button class="btn-remover" onclick="removerItem(${index})">X</button>
                 `;
                 lista.appendChild(li);
@@ -442,9 +511,23 @@
             totalGeral.textContent = total.toFixed(2);
         }
 
+        function verificarPagamento() {
+            let pagamento = document.getElementById('pagamento').value;
+            let campoTroco = document.getElementById('campo-troco');
+            
+            if (pagamento === 'Dinheiro') {
+                campoTroco.style.display = 'block';
+            } else {
+                campoTroco.style.display = 'none';
+                document.getElementById('troco').value = ''; // Limpa se mudar de ideia
+            }
+        }
+
         function enviarParaWhatsApp() {
             let nome = document.getElementById('nome').value.trim();
             let endereco = document.getElementById('endereco').value.trim();
+            let pagamento = document.getElementById('pagamento').value;
+            let troco = document.getElementById('troco').value.trim();
 
             if (carrinho.length === 0) {
                 alert("Adicione pelo menos um item ao pedido!");
@@ -455,15 +538,22 @@
                 return;
             }
 
-            let mensagem = `*Novo Pedido - La Casa de Pastel*\n\n`;
+            let mensagem = `*Novo Pedido - La Casa do Pastel*\n\n`;
             mensagem += `*Cliente:* ${nome}\n`;
-            mensagem += `*Endereço:* ${endereco}\n\n`;
-            mensagem += `*Itens do Pedido:*\n`;
+            mensagem += `*Endereço:* ${endereco}\n`;
+            mensagem += `*Pagamento:* ${pagamento}\n`;
+            
+            if (pagamento === 'Dinheiro' && troco !== "") {
+                mensagem += `*Troco para:* ${troco}\n`;
+            }
+
+            mensagem += `\n*Itens do Pedido:*\n`;
 
             let total = 0;
             carrinho.forEach(item => {
-                mensagem += `- ${item.nome} (R$ ${item.preco.toFixed(2)})\n`;
-                total += item.preco;
+                let subtotal = item.preco * item.qtd;
+                mensagem += `- ${item.qtd}x ${item.nome} (R$ ${subtotal.toFixed(2)})\n`;
+                total += subtotal;
             });
 
             mensagem += `\n*Total a Pagar: R$ ${total.toFixed(2)}*`;
