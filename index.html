@@ -148,8 +148,8 @@
 
                 <hr style="margin: 15px 0; border-color: rgba(255,255,255,0.1);">
                 
-                <p style="font-size:11px; margin-bottom:5px;">Itens Cadastrados (Clique para excluir):</p>
-                <div id="lista-gerenciamento-admin" style="max-height: 180px; overflow-y: auto; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 6px;"></div>
+                <p style="font-size:11px; margin-bottom:5px; color:var(--accent);">Categorias Extras:</p>
+                <div id="lista-gerenciamento-admin" style="max-height: 220px; overflow-y: auto; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 6px;"></div>
             </div>
         </div>
     </div>
@@ -219,7 +219,6 @@
         db.ref('/').on('value', (snapshot) => {
             const dados = snapshot.val();
             if (!dados || !dados.produtos) {
-                // Se o banco estiver vazio, popula com os produtos iniciais e JÁ RENDERIZA na tela
                 const dadosIniciais = { produtos: produtosIniciais, categoriasExtras: [] };
                 db.ref('/').set(dadosIniciais);
                 
@@ -378,7 +377,7 @@
 
         function abrirAdmin() {
             let senha = prompt("Digite a senha do painel:");
-            if (senha === "dxsz") {
+            if (senha === "123") {
                 document.getElementById('painel-admin').style.display = 'block';
                 atualizarSelectCategorias();
                 carregarListaGerenciamento();
@@ -406,8 +405,25 @@
             if(!divLista) return;
             divLista.innerHTML = "";
 
+            // --- LISTA DE CATEGORIAS EXTRAS ---
+            divLista.innerHTML += `<p style="font-size:11px; margin-bottom:5px; color:var(--accent);">Categorias Extras:</p>`;
+            if (dadosGlobais.categoriasExtras.length === 0) {
+                divLista.innerHTML += `<div style="font-size:10px; color:#aaa; margin-bottom:10px;">Nenhuma categoria extra criada.</div>`;
+            } else {
+                dadosGlobais.categoriasExtras.forEach((cat, index) => {
+                    divLista.innerHTML += `
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; font-size:11px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:3px;">
+                            <span>${cat}</span>
+                            <button class="btn-remover-item-admin" style="background:orange;" onclick="removerCategoriaAdmin(${index})">Excluir Cat.</button>
+                        </div>
+                    `;
+                });
+            }
+
+            // --- LISTA DE PRODUTOS ---
+            divLista.innerHTML += `<p style="font-size:11px; margin-top:15px; margin-bottom:5px; color:var(--accent);">Produtos Cadastrados:</p>`;
             if (dadosGlobais.produtos.length === 0) {
-                divLista.innerHTML = '<div style="font-size:11px; text-align:center; color:#aaa;">Nenhum produto cadastrado.</div>';
+                divLista.innerHTML += '<div style="font-size:11px; text-align:center; color:#aaa;">Nenhum produto cadastrado.</div>';
                 return;
             }
 
@@ -419,6 +435,13 @@
                     </div>
                 `;
             });
+        }
+
+        function removerCategoriaAdmin(index) {
+            if (confirm("Tem certeza? Isso vai remover a categoria. Produtos dessa categoria ficarão órfãos!")) {
+                dadosGlobais.categoriasExtras.splice(index, 1);
+                db.ref('/').set(dadosGlobais);
+            }
         }
 
         function adicionarProdutoAdmin() {
