@@ -74,9 +74,44 @@
         #painel-admin { display: none; background: rgba(0, 0, 0, 0.95); border: 2px solid var(--accent); padding: 15px; border-radius: 10px; margin-top: 12px; text-align: left; color: #fff; }
         #painel-admin label { color: var(--accent); }
         .btn-remover-item-admin { background: var(--primary); color: white; border: none; padding: 3px 6px; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: bold; }
+
+        /* ESTILO DO MODAL DE LOGIN CUSTOMIZADO */
+        .modal-login {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            justify-content: center; align-items: center; z-index: 1000;
+        }
+        .modal-content-custom {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid var(--accent);
+            text-align: center;
+            width: 90%; max-width: 300px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+        }
+        .modal-content-custom input {
+            background: #2a2a2a;
+            color: #fff;
+            border: 1px solid rgba(255, 183, 3, 0.4);
+            text-align: center;
+            margin-bottom: 12px;
+        }
     </style>
 </head>
 <body>
+
+    <!-- MODAL DE LOGIN CUSTOMIZADO -->
+    <div id="modal-login" class="modal-login">
+        <div class="modal-content-custom">
+            <h3 style="color:var(--accent); margin-top:0; font-size: 15px;">Acesso Restrito</h3>
+            <input type="password" id="input-senha" placeholder="Digite a senha">
+            <button class="btn-enviar" style="margin-top: 0; padding: 8px; font-size: 13px;" onclick="verificarSenha()">Entrar</button>
+            <button class="btn-enviar" style="margin-top: 8px; padding: 8px; font-size: 13px; background-color: var(--primary); box-shadow: 0 4px 15px rgba(217,4,41,0.4);" onclick="fecharLogin()">Cancelar</button>
+        </div>
+    </div>
 
     <div class="container">
         <header>
@@ -375,14 +410,28 @@
             window.open(`https://api.whatsapp.com/send?phone=5532999893027&text=${encodeURIComponent(mensagem)}`, '_blank');
         }
 
+        // --- NOVAS FUNÇÕES DE LOGIN CUSTOMIZADO ---
         function abrirAdmin() {
-            let senha = prompt("Digite a senha do painel:");
+            document.getElementById('modal-login').style.display = 'flex';
+            document.getElementById('input-senha').focus();
+        }
+
+        function fecharLogin() {
+            document.getElementById('modal-login').style.display = 'none';
+            document.getElementById('input-senha').value = '';
+        }
+
+        function verificarSenha() {
+            let senha = document.getElementById('input-senha').value;
             if (senha === "dxsz") {
                 document.getElementById('painel-admin').style.display = 'block';
                 atualizarSelectCategorias();
                 carregarListaGerenciamento();
-            } else if (senha !== null) {
+                fecharLogin();
+            } else {
                 alert("Senha incorreta!");
+                document.getElementById('input-senha').value = '';
+                document.getElementById('input-senha').focus();
             }
         }
 
