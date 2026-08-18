@@ -1,450 +1,755 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Casa de Pastel | Delivery</title>
-    <link rel="icon" type="image/png" href="logo.png">
-    
-    <!-- Importando o Firebase da Nuvem -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <title>La Casa de Pastel - Delivery</title>
 
     <style>
-        html { scroll-behavior: smooth; }
+
         :root {
+
             --primary: #d90429;
+
             --secondary: #fff;
+
             --accent: #ffb703;
+
             --card-bg: rgba(255, 255, 255, 0.95);
+
             --text: #212529;
+
             --whatsapp: #25d366;
+
         }
+
+
+
         body {
+
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
             background-image: url('fundo.jpg');
+
             background-size: cover;
+
             background-position: center;
+
             background-attachment: fixed;
+
             margin: 0;
+
             padding: 15px;
+
             color: var(--secondary);
+
         }
+
+
+
         .container {
+
             max-width: 480px;
+
             margin: 0 auto;
-            background: rgba(0, 0, 0, 0.85);
+
+            background: rgba(0, 0, 0, 0.8);
+
             padding: 20px;
+
             border-radius: 16px;
+
             box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+
             border: 2px solid rgba(255, 183, 3, 0.3);
+
         }
-        header { text-align: center; margin-bottom: 20px; }
-        .logo-img { max-width: 180px; height: auto; margin-bottom: 5px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); }
-        .subtitle { font-size: 13px; color: var(--accent); margin: 0 0 12px 0; font-weight: 600; }
-        .social-links { display: flex; justify-content: center; gap: 12px; margin-bottom: 10px; }
-        .social-links a { text-decoration: none; font-size: 12px; font-weight: bold; padding: 6px 14px; border-radius: 20px; background: var(--primary); color: white; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-        
-        details { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 183, 3, 0.3); border-radius: 8px; margin-bottom: 10px; overflow: hidden; transition: 0.2s; }
-        details[open] { background: rgba(0, 0, 0, 0.4); border-color: var(--accent); }
-        summary { font-size: 14px; font-weight: bold; color: var(--accent); padding: 12px 15px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; list-style: none; display: flex; justify-content: space-between; align-items: center; }
-        summary::-webkit-details-marker { display: none; }
-        summary::after { content: "▼"; font-size: 11px; transition: transform 0.2s; }
-        details[open] summary::after { transform: rotate(180deg); }
-        .conteudo-categoria { padding: 0 12px 10px 12px; }
-        .produto { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.03); border-radius: 6px; margin-bottom: 6px; }
-        .produto-info h3 { margin: 0 0 2px 0; font-size: 13px; color: white; }
-        .produto-info p { margin: 0; color: var(--accent); font-weight: bold; font-size: 12px; }
-        .controles-qtd { display: flex; align-items: center; gap: 5px; }
-        .btn-qtd { background: rgba(255, 255, 255, 0.2); color: white; border: none; width: 24px; height: 24px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 12px; }
-        .qtd-num { font-size: 13px; font-weight: bold; width: 20px; text-align: center; }
-        .btn-add { background-color: var(--accent); color: #000; border: none; padding: 5px 8px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 11px; transition: 0.2s; }
-        .carrinho { margin-top: 20px; background: var(--card-bg); padding: 15px; border-radius: 12px; color: var(--text); }
-        .carrinho h2 { color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 4px; margin-top: 5px; font-size: 15px; text-transform: uppercase; }
-        .carrinho ul { list-style: none; padding: 0; margin: 8px 0; }
-        .carrinho-item { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding: 5px 0; border-bottom: 1px dashed #ccc; }
-        .btn-remover { background: var(--primary); color: white; border: none; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: bold; }
-        .total-container { display: flex; justify-content: space-between; font-size: 16px; font-weight: bold; margin-top: 12px; color: var(--primary); }
-        label { font-size: 11px; font-weight: 600; color: #444; display: block; margin-top: 10px; }
-        input, select { width: 100%; padding: 8px; margin-top: 3px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 12px; outline: none; background: #f9f9f9; }
-        #campo-troco { display: none; }
-        .btn-enviar { width: 100%; background-color: var(--whatsapp); color: white; border: none; padding: 12px; border-radius: 10px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 15px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); }
-        .admin-section { margin-top: 25px; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 15px; text-align: center; }
-        .btn-admin { background: rgba(255, 255, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: bold; }
-        #painel-admin { display: none; background: rgba(0, 0, 0, 0.95); border: 2px solid var(--accent); padding: 15px; border-radius: 10px; margin-top: 12px; text-align: left; color: #fff; }
-        #painel-admin label { color: var(--accent); }
-        .btn-remover-item-admin { background: var(--primary); color: white; border: none; padding: 3px 6px; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: bold; }
+
+
+
+        header {
+
+            text-align: center;
+
+            margin-bottom: 20px;
+
+        }
+
+
+
+        .logo-img {
+
+            max-width: 200px;
+
+            height: auto;
+
+            margin-bottom: 10px;
+
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+
+        }
+
+
+
+        .subtitle {
+
+            font-size: 14px;
+
+            color: var(--accent);
+
+            margin: 0 0 15px 0;
+
+            font-weight: 600;
+
+        }
+
+
+
+        .social-links {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+
+        .social-links a {
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            padding: 8px 16px;
+
+            border-radius: 20px;
+
+            background: var(--primary);
+
+            color: white;
+
+            transition: 0.2s;
+
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+
+        }
+
+
+
+        .social-links a:hover {
+
+            background: #b50320;
+
+        }
+
+
+
+        h2 {
+
+            font-size: 16px;
+
+            border-bottom: 2px solid var(--accent);
+
+            padding-bottom: 5px;
+
+            margin-top: 25px;
+
+            color: var(--accent);
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+        }
+
+
+
+        .produto {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 10px;
+
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+
+            background: rgba(255, 255, 255, 0.05);
+
+            border-radius: 8px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+
+        .produto-info h3 {
+
+            margin: 0 0 3px 0;
+
+            font-size: 14px;
+
+            color: white;
+
+        }
+
+
+
+        .produto-info p {
+
+            margin: 0;
+
+            color: var(--accent);
+
+            font-weight: bold;
+
+            font-size: 13px;
+
+        }
+
+
+
+        .btn-add {
+
+            background-color: var(--accent);
+
+            color: #000;
+
+            border: none;
+
+            padding: 6px 12px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 12px;
+
+            transition: 0.2s;
+
+        }
+
+
+
+        .btn-add:hover {
+
+            background-color: #f79300;
+
+        }
+
+
+
+        .carrinho {
+
+            margin-top: 25px;
+
+            background: var(--card-bg);
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            color: var(--text);
+
+        }
+
+
+
+        .carrinho h2 {
+
+            color: var(--primary);
+
+            border-bottom-color: var(--primary);
+
+        }
+
+
+
+        .carrinho ul {
+
+            list-style: none;
+
+            padding: 0;
+
+            margin: 10px 0;
+
+        }
+
+
+
+        .carrinho-item {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            font-size: 13px;
+
+            padding: 6px 0;
+
+            border-bottom: 1px dashed #ccc;
+
+        }
+
+
+
+        .btn-remover {
+
+            background: var(--primary);
+
+            color: white;
+
+            border: none;
+
+            padding: 3px 8px;
+
+            border-radius: 4px;
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+        }
+
+
+
+        .btn-remover:hover {
+
+            background: #b50320;
+
+        }
+
+
+
+        .total-container {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            margin-top: 15px;
+
+            color: var(--primary);
+
+        }
+
+
+
+        label {
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            color: #444;
+
+            display: block;
+
+            margin-top: 12px;
+
+        }
+
+
+
+        input {
+
+            width: 100%;
+
+            padding: 10px;
+
+            margin-top: 4px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            box-sizing: border-box;
+
+            font-size: 13px;
+
+            outline: none;
+
+            background: #f9f9f9;
+
+        }
+
+
+
+        input:focus {
+
+            border-color: var(--primary);
+
+            background: #fff;
+
+        }
+
+
+
+        .btn-enviar {
+
+            width: 100%;
+
+            background-color: var(--whatsapp);
+
+            color: white;
+
+            border: none;
+
+            padding: 14px;
+
+            border-radius: 10px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 20px;
+
+            transition: 0.2s;
+
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+
+        }
+
+
+
+        .btn-enviar:hover {
+
+            background-color: #1ebe5d;
+
+        }
+
     </style>
+
 </head>
+
 <body>
 
+
+
     <div class="container">
+
         <header>
-            <img src="logo.png" alt="La Casa do Pastel Logo" class="logo-img">
-            <p class="subtitle">Pastelaria e Caldo de Cana 🥟🔥</p>
+
+            <img src="logo.png" alt="La Casa de Pastel Logo" class="logo-img">
+
+            <p class="subtitle">O sabor que você ama, no conforto do seu lar 🥟🔥</p>
+
+           
+
             <div class="social-links">
-                <a href="https://www.instagram.com/lacasadepastel.eugenopolis" target="_blank">📸 Instagram</a>
+
+                <a href="https://instagram.com/lacasadepastel.eugenopolis" target="_blank">📸 Instagram</a>
+
                 <a href="https://wa.me/5532999893027" target="_blank">💬 WhatsApp</a>
+
             </div>
+
         </header>
 
-        <div id="cardapio-container">Carregando cardápio em tempo real...</div>
+
+
+        <h2>🥟 Pastéis</h2>
+
+
+
+        <div class="produto">
+
+            <div class="produto-info">
+
+                <h3>Pastel de Frango com Catupiry</h3>
+
+                <p>R$ 10,00</p>
+
+            </div>
+
+            <button class="btn-add" onclick="adicionar('Pastel de Frango com Catupiry', 10)">+ Adicionar</button>
+
+        </div>
+
+
+
+        <div class="produto">
+
+            <div class="produto-info">
+
+                <h3>Pastel de Carne com Queijo</h3>
+
+                <p>R$ 10,00</p>
+
+            </div>
+
+            <button class="btn-add" onclick="adicionar('Pastel de Carne com Queijo', 10)">+ Adicionar</button>
+
+        </div>
+
+
+
+        <div class="produto">
+
+            <div class="produto-info">
+
+                <h3>Pastel Simples (Carne ou Frango)</h3>
+
+                <p>R$ 6,00</p>
+
+            </div>
+
+            <button class="btn-add" onclick="adicionar('Pastel Simples', 6)">+ Adicionar</button>
+
+        </div>
+
+
+
+        <h2>🥤 Caldo de Cana</h2>
+
+
+
+        <div class="produto">
+
+            <div class="produto-info">
+
+                <h3>Garrafa 500ml</h3>
+
+                <p>R$ 8,00</p>
+
+            </div>
+
+            <button class="btn-add" onclick="adicionar('Caldo de Cana 500ml', 8)">+ Adicionar</button>
+
+        </div>
+
+
+
+        <div class="produto">
+
+            <div class="produto-info">
+
+                <h3>Garrafa 1L</h3>
+
+                <p>R$ 15,00</p>
+
+            </div>
+
+            <button class="btn-add" onclick="adicionar('Caldo de Cana 1L', 15)">+ Adicionar</button>
+
+        </div>
+
+
 
         <div class="carrinho">
+
             <h2>Seu Pedido</h2>
+
             <ul id="itens-carrinho">
-                <li style="color: #777; font-size: 12px; text-align: center; padding: 8px 0;">Carrinho vazio. Escolha os itens acima!</li>
+
+                <li style="color: #777; font-size: 13px; text-align: center; padding: 10px 0;">Carrinho vazio. Escolha os itens acima!</li>
+
             </ul>
+
+           
+
             <div class="total-container">
+
                 <span>Total:</span>
+
                 <span>R$ <span id="total-geral">0,00</span></span>
+
             </div>
+
+
 
             <label for="nome">Seu Nome:</label>
+
             <input type="text" id="nome" placeholder="Ex: João da Silva">
 
+
+
             <label for="endereco">Endereço de Entrega:</label>
+
             <input type="text" id="endereco" placeholder="Ex: Rua Principal, 123">
 
-            <label for="pagamento">Forma de Pagamento:</label>
-            <select id="pagamento" onchange="verificarPagamento()">
-                <option value="Pix">Pix</option>
-                <option value="Dinheiro">Dinheiro</option>
-                <option value="Cartão de Crédito">Cartão de Crédito</option>
-                <option value="Cartão de Débito">Cartão de Débito</option>
-            </select>
 
-            <div id="campo-troco">
-                <label for="troco">Troco para quanto? (Opcional):</label>
-                <input type="text" id="troco" placeholder="Ex: R$ 50,00">
-            </div>
 
             <button class="btn-enviar" onclick="enviarParaWhatsApp()">Enviar Pedido no WhatsApp 🚀</button>
+
         </div>
 
-        <div class="admin-section">
-            <button class="btn-admin" onclick="abrirAdmin()">⚙️ Painel do Administrador</button>
-            <div id="painel-admin">
-                <h3 style="margin-top:0; font-size:14px; color:var(--accent);">Gerenciar Cardápio</h3>
-                
-                <label>Criar Nova Categoria:</label>
-                <div style="display: flex; gap: 5px;">
-                    <input type="text" id="adm-nova-categoria" placeholder="Ex: 🍔 Lanches">
-                    <button class="btn-enviar" style="margin-top:3px; padding:6px 10px; font-size:11px;" onclick="adicionarCategoriaAdmin()">Criar</button>
-                </div>
-
-                <hr style="margin: 15px 0; border-color: rgba(255,255,255,0.1);">
-
-                <label>Categoria do Item:</label>
-                <select id="adm-categoria"></select>
-
-                <label>Nome do Item:</label>
-                <input type="text" id="adm-nome" placeholder="Ex: Pastel de Vento">
-
-                <label>Preço (Apenas números, ex: 6.00):</label>
-                <input type="text" id="adm-preco" placeholder="6.00">
-
-                <button class="btn-enviar" style="margin-top:10px; font-size:13px; padding:8px;" onclick="adicionarProdutoAdmin()">Adicionar Item</button>
-
-                <hr style="margin: 15px 0; border-color: rgba(255,255,255,0.1);">
-                
-                <p style="font-size:11px; margin-bottom:5px;">Itens Cadastrados (Clique para excluir):</p>
-                <div id="lista-gerenciamento-admin" style="max-height: 180px; overflow-y: auto; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 6px;"></div>
-            </div>
-        </div>
     </div>
 
+
+
     <script>
-        // ================= CONFIGURAÇÃO DO FIREBASE =================
-        const firebaseConfig = {
-            apiKey: "SUA_API_KEY_AQUI",
-            authDomain: "seu-projeto.firebaseapp.com",
-            databaseURL: "https://seu-projeto-default-rtdb.firebaseio.com",
-            projectId: "seu-projeto",
-            storageBucket: "seu-projeto.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123..."
-        };
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        // ============================================================
-
-        const produtosIniciais = [
-            { id: 1, categoria: "🥟 Tradicional", nome: "Queijo", preco: 5.00 },
-            { id: 2, categoria: "🥟 Tradicional", nome: "Frango", preco: 5.00 },
-            { id: 3, categoria: "🥟 Tradicional", nome: "Carne", preco: 5.00 },
-            { id: 4, categoria: "🥟 Tradicional", nome: "Calabresa", preco: 5.00 },
-            { id: 5, categoria: "🔥 Clássicos", nome: "Pizza", preco: 6.00 },
-            { id: 6, categoria: "🔥 Clássicos", nome: "Carne c/ Queijo", preco: 6.00 },
-            { id: 7, categoria: "🔥 Clássicos", nome: "Frango c/ Queijo", preco: 6.00 },
-            { id: 8, categoria: "🔥 Clássicos", nome: "Frango c/ Catupiry", preco: 6.00 },
-            { id: 9, categoria: "🔥 Clássicos", nome: "Frango c/ Palmito", preco: 6.00 },
-            { id: 10, categoria: "🔥 Clássicos", nome: "Frango c/ Calabresa", preco: 8.00 },
-            { id: 11, categoria: "⭐ Especiais", nome: "Carne / Presunto / Queijo", preco: 8.00 },
-            { id: 12, categoria: "⭐ Especiais", nome: "Carne / Palmito / Queijo", preco: 8.00 },
-            { id: 13, categoria: "⭐ Especiais", nome: "Carne / Calabresa / Queijo", preco: 8.00 },
-            { id: 14, categoria: "⭐ Especiais", nome: "Frango / Presunto / Queijo", preco: 8.00 },
-            { id: 15, categoria: "⭐ Especiais", nome: "Frango / Palmito / Queijo", preco: 8.00 },
-            { id: 16, categoria: "💎 Premium", nome: "Estrogonofe", preco: 10.00 },
-            { id: 17, categoria: "💎 Premium", nome: "Monjaro", preco: 10.00 },
-            { id: 18, categoria: "💎 Premium", nome: "Carne Seca", preco: 12.00 },
-            { id: 19, categoria: "💎 Premium", nome: "Bariátrica", preco: 15.00 },
-            { id: 20, categoria: "🥤 Suco", nome: "Suco de Laranja Natural (Copo)", preco: 8.00 },
-            { id: 21, categoria: "🥤 Suco", nome: "Suco de Abacaxi Natural (Copo)", preco: 8.00 },
-            { id: 22, categoria: "🥤 Suco", nome: "Suco de Graviola Natural (Copo)", preco: 8.00 },
-            { id: 23, categoria: "🥤 Suco", nome: "Suco de Maracujá Natural (Copo)", preco: 8.00 },
-            { id: 24, categoria: "🥤 Suco", nome: "Suco Verde 300ml (Copo)", preco: 3.00 },
-            { id: 25, categoria: "🥤 Suco", nome: "Suco de Laranjada 300ml (Copo)", preco: 3.00 },
-            { id: 26, categoria: "🥤 Suco", nome: "Suco Natural (Garrafa) 500ml", preco: 10.00 },
-            { id: 27, categoria: "🥤 Suco", nome: "Suco Natural (Garrafa) 1 Litro", preco: 18.00 },
-            { id: 28, categoria: "🥥 Água de Coco", nome: "Água de Coco 500ml Garrafa", preco: 10.00 },
-            { id: 29, categoria: "🥥 Água de Coco", nome: "Água de Coco 300ml Copo", preco: 7.00 },
-            { id: 30, categoria: "🥥 Água de Coco", nome: "Água de Coco 200ml Copo", preco: 5.00 },
-            { id: 31, categoria: "💧 Água Mineral", nome: "Água Mineral c/ Gás", preco: 3.50 },
-            { id: 32, categoria: "💧 Água Mineral", nome: "Água Mineral s/ Gás", preco: 3.00 },
-            { id: 33, categoria: "🌾 Caldo de Cana", nome: "Caldo de Cana Copo 300ml", preco: 5.00 },
-            { id: 34, categoria: "🌾 Caldo de Cana", nome: "Caldo de Cana Garrafa 500ml", preco: 8.00 },
-            { id: 35, categoria: "🌾 Caldo de Cana", nome: "Caldo de Cana 1 Litro", preco: 15.00 },
-            { id: 36, categoria: "🥤 Refrigerante", nome: "Refrigerante 1 Litro", preco: 12.00 },
-            { id: 37, categoria: "🥤 Refrigerante", nome: "Refrigerante 600ml", preco: 10.00 },
-            { id: 38, categoria: "🥤 Refrigerante", nome: "Refrigerante Lata 350ml", preco: 8.00 }
-        ];
-
-        let dadosGlobais = { produtos: [], categoriasExtras: [] };
         let carrinho = [];
 
-        // Ouve o banco de dados em TEMPO REAL para qualquer alteração
-        db.ref('/').on('value', (snapshot) => {
-            const dados = snapshot.val();
-            if (!dados || !dados.produtos) {
-                // Se o banco estiver vazio, popula com os produtos iniciais e JÁ RENDERIZA na tela
-                const dadosIniciais = { produtos: produtosIniciais, categoriasExtras: [] };
-                db.ref('/').set(dadosIniciais);
-                
-                dadosGlobais.produtos = dadosIniciais.produtos;
-                dadosGlobais.categoriasExtras = dadosIniciais.categoriasExtras;
-                renderizarCardapio();
-                carregarListaGerenciamento();
-            } else {
-                dadosGlobais.produtos = dados.produtos || [];
-                dadosGlobais.categoriasExtras = dados.categoriasExtras || [];
-                renderizarCardapio();
-                carregarListaGerenciamento();
-            }
-        });
 
-        function obterTodasCategorias() {
-            let catsProdutos = dadosGlobais.produtos.map(p => p.categoria);
-            return [...new Set([...catsProdutos, ...dadosGlobais.categoriasExtras])];
-        }
 
-        function atualizarSelectCategorias() {
-            let select = document.getElementById('adm-categoria');
-            if(!select) return;
-            let categorias = obterTodasCategorias();
-            select.innerHTML = '';
-            categorias.forEach(cat => {
-                select.innerHTML += `<option value="${cat}">${cat}</option>`;
-            });
-        }
+        function adicionar(nome, preco) {
 
-        function renderizarCardapio() {
-            const container = document.getElementById('cardapio-container');
-            container.innerHTML = '';
-            const categoriasUnicas = obterTodasCategorias();
+            carrinho.push({ nome, preco });
 
-            categoriasUnicas.forEach(cat => {
-                const itensCat = dadosGlobais.produtos.filter(p => p.categoria === cat);
-                let htmlItens = '';
-                
-                if (itensCat.length === 0) {
-                    htmlItens = `<div style="font-size:11px; color:#aaa; text-align:center; padding: 6px;">Nenhum produto cadastrado nesta categoria.</div>`;
-                } else {
-                    itensCat.forEach((item) => {
-                        let safeId = `prod_${item.id}`;
-                        htmlItens += `
-                            <div class="produto">
-                                <div class="produto-info">
-                                    <h3>${item.nome}</h3>
-                                    <p>R$ ${item.preco.toFixed(2).replace('.', ',')}</p>
-                                </div>
-                                <div class="controles-qtd">
-                                    <button class="btn-qtd" onclick="mudarQtd('${safeId}', -1)">-</button>
-                                    <span id="${safeId}" class="qtd-num">1</span>
-                                    <button class="btn-qtd" onclick="mudarQtd('${safeId}', 1)">+</button>
-                                    <button class="btn-add" onclick="adicionarComQtd('${item.nome.replace(/'/g, "\\'")}', ${item.preco}, '${safeId}')">Adicionar</button>
-                                </div>
-                            </div>
-                        `;
-                    });
-                }
-
-                container.innerHTML += `
-                    <details>
-                        <summary>${cat}</summary>
-                        <div class="conteudo-categoria">${htmlItens}</div>
-                    </details>
-                `;
-            });
-            atualizarSelectCategorias();
             atualizarCarrinho();
+
         }
 
-        function mudarQtd(idElemento, valor) {
-            let el = document.getElementById(idElemento);
-            if (!el) return;
-            let atual = parseInt(el.textContent);
-            let novo = atual + valor;
-            if (novo < 1) novo = 1;
-            el.textContent = novo;
-        }
 
-        function adicionarComQtd(nome, preco, idElemento) {
-            let elQtd = document.getElementById(idElemento);
-            let qtd = elQtd ? parseInt(elQtd.textContent) : 1;
-            let itemExistente = carrinho.find(item => item.nome === nome);
-            if (itemExistente) {
-                itemExistente.qtd += qtd;
-            } else {
-                carrinho.push({ nome, preco, qtd });
-            }
-            if (elQtd) elQtd.textContent = 1;
-            atualizarCarrinho();
-        }
 
         function removerItem(index) {
+
             carrinho.splice(index, 1);
+
             atualizarCarrinho();
+
         }
+
+
 
         function atualizarCarrinho() {
+
             let lista = document.getElementById('itens-carrinho');
+
             let totalGeral = document.getElementById('total-geral');
+
+           
+
             lista.innerHTML = "";
+
             let total = 0;
+
+
 
             if (carrinho.length === 0) {
-                lista.innerHTML = '<li style="color: #777; font-size: 12px; text-align: center; padding: 8px 0;">Carrinho vazio. Escolha os itens acima!</li>';
+
+                lista.innerHTML = '<li style="color: #777; font-size: 13px; text-align: center; padding: 10px 0;">Carrinho vazio. Escolha os itens acima!</li>';
+
                 totalGeral.textContent = "0,00";
+
                 return;
+
             }
+
+
 
             carrinho.forEach((item, index) => {
-                let subtotal = item.preco * item.qtd;
-                total += subtotal;
+
+                total += item.preco;
+
                 let li = document.createElement('li');
+
                 li.className = 'carrinho-item';
+
                 li.innerHTML = `
-                    <span>${item.qtd}x ${item.nome} - R$ ${subtotal.toFixed(2).replace('.', ',')}</span>
+
+                    <span>${item.nome} - R$ ${item.preco.toFixed(2)}</span>
+
                     <button class="btn-remover" onclick="removerItem(${index})">X</button>
+
                 `;
+
                 lista.appendChild(li);
+
             });
-            totalGeral.textContent = total.toFixed(2).replace('.', ',');
+
+
+
+            totalGeral.textContent = total.toFixed(2);
+
         }
 
-        function verificarPagamento() {
-            let pagamento = document.getElementById('pagamento').value;
-            let campoTroco = document.getElementById('campo-troco');
-            campoTroco.style.display = (pagamento === 'Dinheiro') ? 'block' : 'none';
-            if (pagamento !== 'Dinheiro') document.getElementById('troco').value = '';
-        }
+
 
         function enviarParaWhatsApp() {
-            let nome = document.getElementById('nome').value.trim();
-            let endereco = document.getElementById('endereco').value.trim();
-            let pagamento = document.getElementById('pagamento').value;
-            let troco = document.getElementById('troco').value.trim();
 
-            if (carrinho.length === 0) { alert("Adicione pelo menos um item ao pedido!"); return; }
-            if (nome === "" || endereco === "") { alert("Por favor, preencha seu nome e endereço!"); return; }
+            let nome = document.getElementById('nome'.value)?.trim() || document.getElementById('nome').value;
 
-            let mensagem = `*Novo Pedido - La Casa do Pastel*\n\n*Cliente:* ${nome}\n*Endereço:* ${endereco}\n*Pagamento:* ${pagamento}\n`;
-            if (pagamento === 'Dinheiro' && troco !== "") mensagem += `*Troco para:* ${troco}\n`;
-            mensagem += `\n*Itens do Pedido:*\n`;
+            let endereco = document.getElementById('endereco').value;
+
+
+
+            if (carrinho.length === 0) {
+
+                alert("Adicione pelo menos um item ao pedido!");
+
+                return;
+
+            }
+
+            if (nome.trim() === "" || endereco.trim() === "") {
+
+                alert("Por favor, preencha seu nome e endereço!");
+
+                return;
+
+            }
+
+
+
+            let mensagem = `*Novo Pedido - La Casa de Pastel*%0A%0A`;
+
+            mensagem += `*Cliente:* ${nome}%0A`;
+
+            mensagem += `*Endereço:* ${endereco}%0A%0A`;
+
+            mensagem += `*Itens do Pedido:*%0A`;
+
+
 
             let total = 0;
+
             carrinho.forEach(item => {
-                let subtotal = item.preco * item.qtd;
-                mensagem += `- ${item.qtd}x ${item.nome} (R$ ${subtotal.toFixed(2).replace('.', ',')})\n`;
-                total += subtotal;
+
+                mensagem += `- ${item.nome} (R$ ${item.preco.toFixed(2)})%0A`;
+
+                total += item.preco;
+
             });
-            mensagem += `\n*Total a Pagar: R$ ${total.toFixed(2).replace('.', ',')}*`;
 
-            window.open(`https://api.whatsapp.com/send?phone=5532999893027&text=${encodeURIComponent(mensagem)}`, '_blank');
+
+
+            mensagem += `%0A*Total a Pagar: R$ ${total.toFixed(2)}*`;
+
+
+
+            let numeroWhatsApp = "5532999893027";
+
+            let url = `https://api.whatsapp.com/send?phone=${numeroWhatsApp}&text=${mensagem}`;
+
+
+
+            window.open(url, '_blank');
+
         }
 
-        function abrirAdmin() {
-            let senha = prompt("Digite a senha do painel:");
-            if (senha === "dxsz") {
-                document.getElementById('painel-admin').style.display = 'block';
-                atualizarSelectCategorias();
-                carregarListaGerenciamento();
-            } else if (senha !== null) {
-                alert("Senha incorreta!");
-            }
-        }
-
-        function adicionarCategoriaAdmin() {
-            let novaCat = document.getElementById('adm-nova-categoria').value.trim();
-            if (!novaCat) { alert("Digite o nome da nova categoria!"); return; }
-
-            let categorias = obterTodasCategorias();
-            if (categorias.includes(novaCat)) { alert("Esta categoria já existe!"); return; }
-
-            dadosGlobais.categoriasExtras.push(novaCat);
-            db.ref('/').set(dadosGlobais);
-
-            document.getElementById('adm-nova-categoria').value = '';
-            alert("Categoria criada com sucesso!");
-        }
-
-        function carregarListaGerenciamento() {
-            let divLista = document.getElementById('lista-gerenciamento-admin');
-            if(!divLista) return;
-            divLista.innerHTML = "";
-
-            if (dadosGlobais.produtos.length === 0) {
-                divLista.innerHTML = '<div style="font-size:11px; text-align:center; color:#aaa;">Nenhum produto cadastrado.</div>';
-                return;
-            }
-
-            dadosGlobais.produtos.forEach(p => {
-                divLista.innerHTML += `
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; font-size:11px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:3px;">
-                        <span><b>[${p.categoria}]</b> ${p.nome} - R$ ${p.preco.toFixed(2).replace('.', ',')}</span>
-                        <button class="btn-remover-item-admin" onclick="removerProdutoAdmin(${p.id})">Excluir</button>
-                    </div>
-                `;
-            });
-        }
-
-        function adicionarProdutoAdmin() {
-            let categoria = document.getElementById('adm-categoria').value;
-            let nome = document.getElementById('adm-nome').value.trim();
-            let precoStr = document.getElementById('adm-preco').value.trim().replace(',', '.');
-
-            if (!nome || !precoStr) { alert("Preencha o nome e o preço!"); return; }
-            let preco = parseFloat(precoStr);
-            if (isNaN(preco)) { alert("Preço inválido!"); return; }
-
-            let novoId = dadosGlobais.produtos.length > 0 ? Math.max(...dadosGlobais.produtos.map(p => p.id)) + 1 : 1;
-            dadosGlobais.produtos.push({ id: novoId, categoria, nome, preco });
-            
-            db.ref('/').set(dadosGlobais);
-
-            document.getElementById('adm-nome').value = '';
-            document.getElementById('adm-preco').value = '';
-            alert("Item adicionado com sucesso!");
-        }
-
-        function removerProdutoAdmin(id) {
-            if (confirm("Tem certeza que deseja excluir este item?")) {
-                dadosGlobais.produtos = dadosGlobais.produtos.filter(p => p.id !== id);
-                db.ref('/').set(dadosGlobais);
-            }
-        }
     </script>
+
 </body>
+
 </html>
