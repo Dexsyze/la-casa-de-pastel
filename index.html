@@ -64,7 +64,9 @@
         .carrinho ul { list-style: none; padding: 0; margin: 8px 0; }
         .carrinho-item { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding: 5px 0; border-bottom: 1px dashed #ccc; }
         .btn-remover { background: var(--primary); color: white; border: none; padding: 2px 6px; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: bold; }
-        .total-container { display: flex; justify-content: space-between; font-size: 16px; font-weight: bold; margin-top: 12px; color: var(--primary); }
+        .taxa-entrega-info { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-top: 8px; color: #555; }
+        .total-container { display: flex; justify-content: space-between; font-size: 16px; font-weight: bold; margin-top: 8px; border-top: 1px solid #ccc; padding-top: 8px; color: var(--primary); }
+        .aviso-taxa { font-size: 11px; color: #d90429; font-weight: bold; margin-top: 6px; text-align: center; background: rgba(217, 4, 41, 0.1); padding: 5px; border-radius: 6px; }
         label { font-size: 11px; font-weight: 600; color: #444; display: block; margin-top: 10px; }
         input, select { width: 100%; padding: 8px; margin-top: 3px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 12px; outline: none; background: #f9f9f9; }
         #campo-troco { display: none; }
@@ -130,10 +132,18 @@
             <ul id="itens-carrinho">
                 <li style="color: #777; font-size: 12px; text-align: center; padding: 8px 0;">Carrinho vazio. Escolha os itens acima!</li>
             </ul>
+            
+            <div class="taxa-entrega-info">
+                <span>Taxa de Entrega:</span>
+                <span>R$ <span id="taxa-entrega">2,00</span></span>
+            </div>
+
             <div class="total-container">
                 <span>Total:</span>
                 <span>R$ <span id="total-geral">0,00</span></span>
             </div>
+            
+            <div class="aviso-taxa">⚠️ Taxa de entrega fixa de R$ 2,00 aplicada ao pedido.</div>
 
             <label for="nome">Seu Nome:</label>
             <input type="text" id="nome" placeholder="Ex: João da Silva">
@@ -249,6 +259,7 @@
 
         let dadosGlobais = { produtos: [], categoriasExtras: [] };
         let carrinho = [];
+        const taxaEntregaFixa = 2.00;
 
         // Ouve o banco de dados em TEMPO REAL para qualquer alteração
         db.ref('/').on('value', (snapshot) => {
@@ -357,7 +368,7 @@
             let lista = document.getElementById('itens-carrinho');
             let totalGeral = document.getElementById('total-geral');
             lista.innerHTML = "";
-            let total = 0;
+            let subtotalProdutos = 0;
 
             if (carrinho.length === 0) {
                 lista.innerHTML = '<li style="color: #777; font-size: 12px; text-align: center; padding: 8px 0;">Carrinho vazio. Escolha os itens acima!</li>';
@@ -367,7 +378,7 @@
 
             carrinho.forEach((item, index) => {
                 let subtotal = item.preco * item.qtd;
-                total += subtotal;
+                subtotalProdutos += subtotal;
                 let li = document.createElement('li');
                 li.className = 'carrinho-item';
                 li.innerHTML = `
@@ -376,7 +387,9 @@
                 `;
                 lista.appendChild(li);
             });
-            totalGeral.textContent = total.toFixed(2).replace('.', ',');
+
+            let totalComEntrega = subtotalProdutos + taxaEntregaFixa;
+            totalGeral.textContent = totalComEntrega.toFixed(2).replace('.', ',');
         }
 
         function verificarPagamento() {
@@ -399,13 +412,16 @@
             if (pagamento === 'Dinheiro' && troco !== "") mensagem += `*Troco para:* ${troco}\n`;
             mensagem += `\n*Itens do Pedido:*\n`;
 
-            let total = 0;
+            let subtotalProdutos = 0;
             carrinho.forEach(item => {
                 let subtotal = item.preco * item.qtd;
                 mensagem += `- ${item.qtd}x ${item.nome} (R$ ${subtotal.toFixed(2).replace('.', ',')})\n`;
-                total += subtotal;
+                subtotalProdutos += subtotal;
             });
-            mensagem += `\n*Total a Pagar: R$ ${total.toFixed(2).replace('.', ',')}*`;
+
+            let totalComEntrega = subtotalProdutos + taxaEntregaFixa;
+            mensagem += `- Taxa de Entrega: R$ ${taxaEntregaFixa.toFixed(2).replace('.', ',')}\n`;
+            mensagem += `\n*Total a Pagar (com entrega): R$ ${totalComEntrega.toFixed(2).replace('.', ',')}*`;
 
             window.open(`https://api.whatsapp.com/send?phone=5532999893027&text=${encodeURIComponent(mensagem)}`, '_blank');
         }
