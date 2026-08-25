@@ -1,3 +1,3 @@
-self.addEventListener('fetch', (event) => {
-  // Mantém o app fluido e pronto para instalação
+self.addEventListener('fetch', function(event) {
+  // Apenas permite que o site funcione normalmente
 });
