@@ -6,6 +6,15 @@
     <title>La Casa de Pastel | Delivery</title>
     <link rel="icon" type="image/png" href="logo.png">
     
+    <!-- CONFIGURAÇÕES DE PWA (APLICATIVO INSTALÁVEL) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#d90429">
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+      }
+    </script>
+    
     <!-- Importando o Firebase da Nuvem -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -168,7 +177,7 @@
         </div>
 
         <div class="admin-section">
-            <button class="btn-admin" onclick="abrirAdmin()">⚙️ </button>
+            <button class="btn-admin" onclick="abrirAdmin()">⚙️</button>
             <div id="painel-admin">
                 <h3 style="margin-top:0; font-size:14px; color:var(--accent);">Gerenciar Cardápio</h3>
                 
@@ -257,24 +266,24 @@
             { id: 38, categoria: "🥤 Refrigerante", nome: "Refrigerante Lata 350ml", preco: 8.00 }
         ];
 
-        let dadosGlobais = { produtos: [], categoriasExtras: [] };
+        let dadosGlobais = { produtos: [], categorias: [] };
         let carrinho = [];
         const taxaEntregaFixa = 2.00;
 
-        // Ouve o banco de dados em TEMPO REAL para qualquer alteração
+        // Ouve o banco de dados em TEMPO REAL utilizando "categorias"
         db.ref('/').on('value', (snapshot) => {
             const dados = snapshot.val();
             if (!dados || !dados.produtos) {
-                const dadosIniciais = { produtos: produtosIniciais, categoriasExtras: [] };
+                const dadosIniciais = { produtos: produtosIniciais, categorias: [] };
                 db.ref('/').set(dadosIniciais);
                 
                 dadosGlobais.produtos = dadosIniciais.produtos;
-                dadosGlobais.categoriasExtras = dadosIniciais.categoriasExtras;
+                dadosGlobais.categorias = dadosIniciais.categorias;
                 renderizarCardapio();
                 carregarListaGerenciamento();
             } else {
                 dadosGlobais.produtos = dados.produtos || [];
-                dadosGlobais.categoriasExtras = dados.categoriasExtras || [];
+                dadosGlobais.categorias = dados.categorias || dados.lojasExtras || [];
                 renderizarCardapio();
                 carregarListaGerenciamento();
             }
@@ -282,7 +291,7 @@
 
         function obterTodasCategorias() {
             let catsProdutos = dadosGlobais.produtos.map(p => p.categoria);
-            return [...new Set([...catsProdutos, ...dadosGlobais.categoriasExtras])];
+            return [...new Set([...catsProdutos, ...dadosGlobais.categorias])];
         }
 
         function atualizarSelectCategorias() {
@@ -426,7 +435,7 @@
             window.open(`https://api.whatsapp.com/send?phone=5532999893027&text=${encodeURIComponent(mensagem)}`, '_blank');
         }
 
-        // --- NOVAS FUNÇÕES DE LOGIN CUSTOMIZADO ---
+        // --- FUNÇÕES DE LOGIN CUSTOMIZADO ---
         function abrirAdmin() {
             document.getElementById('modal-login').style.display = 'flex';
             document.getElementById('input-senha').focus();
@@ -458,8 +467,12 @@
             let categorias = obterTodasCategorias();
             if (categorias.includes(novaCat)) { alert("Esta categoria já existe!"); return; }
 
-            dadosGlobais.categoriasExtras.push(novaCat);
-            db.ref('/').set(dadosGlobais);
+            dadosGlobais.categorias.push(novaCat);
+            
+            db.ref('/').set({
+                produtos: dadosGlobais.produtos,
+                categorias: dadosGlobais.categorias
+            });
 
             document.getElementById('adm-nova-categoria').value = '';
             alert("Categoria criada com sucesso!");
@@ -470,12 +483,11 @@
             if(!divLista) return;
             divLista.innerHTML = "";
 
-            // --- LISTA DE CATEGORIAS EXTRAS ---
             divLista.innerHTML += `<p style="font-size:11px; margin-bottom:5px; color:var(--accent);">Categorias Extras:</p>`;
-            if (dadosGlobais.categoriasExtras.length === 0) {
+            if (dadosGlobais.categorias.length === 0) {
                 divLista.innerHTML += `<div style="font-size:10px; color:#aaa; margin-bottom:10px;">Nenhuma categoria extra criada.</div>`;
             } else {
-                dadosGlobais.categoriasExtras.forEach((cat, index) => {
+                dadosGlobais.categorias.forEach((cat, index) => {
                     divLista.innerHTML += `
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; font-size:11px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:3px;">
                             <span>${cat}</span>
@@ -485,7 +497,6 @@
                 });
             }
 
-            // --- LISTA DE PRODUTOS ---
             divLista.innerHTML += `<p style="font-size:11px; margin-top:15px; margin-bottom:5px; color:var(--accent);">Produtos Cadastrados:</p>`;
             if (dadosGlobais.produtos.length === 0) {
                 divLista.innerHTML += '<div style="font-size:11px; text-align:center; color:#aaa;">Nenhum produto cadastrado.</div>';
@@ -503,9 +514,12 @@
         }
 
         function removerCategoriaAdmin(index) {
-            if (confirm("Tem certeza? Isso vai remover a categoria. Produtos dessa categoria ficarão órfãos!")) {
-                dadosGlobais.categoriasExtras.splice(index, 1);
-                db.ref('/').set(dadosGlobais);
+            if (confirm("Tem certeza? Isso vai remover a categoria.")) {
+                dadosGlobais.categorias.splice(index, 1);
+                db.ref('/').set({
+                    produtos: dadosGlobais.produtos,
+                    categorias: dadosGlobais.categorias
+                });
             }
         }
 
@@ -521,7 +535,10 @@
             let novoId = dadosGlobais.produtos.length > 0 ? Math.max(...dadosGlobais.produtos.map(p => p.id)) + 1 : 1;
             dadosGlobais.produtos.push({ id: novoId, categoria, nome, preco });
             
-            db.ref('/').set(dadosGlobais);
+            db.ref('/').set({
+                produtos: dadosGlobais.produtos,
+                categorias: dadosGlobais.categorias
+            });
 
             document.getElementById('adm-nome').value = '';
             document.getElementById('adm-preco').value = '';
@@ -531,9 +548,12 @@
         function removerProdutoAdmin(id) {
             if (confirm("Tem certeza que deseja excluir este item?")) {
                 dadosGlobais.produtos = dadosGlobais.produtos.filter(p => p.id !== id);
-                db.ref('/').set(dadosGlobais);
+                db.ref('/').set({
+                    produtos: dadosGlobais.produtos,
+                    categorias: dadosGlobais.categorias
+                });
             }
         }
     </script>
-</body><script defer src="/_vercel/insights/script.js"></script>
+</body>
 </html>
