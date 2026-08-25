@@ -1,7 +1,7 @@
 {
-  "name": "La Casa de Pastel",
+  "name": "La Casa de Pastel Delivery",
   "short_name": "La Casa de Pastel",
-  "start_url": "./",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#d90429",
